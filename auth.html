@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SLAUGHTER — Врата в бездну</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="auth-page">
+
+    <!-- Кровавые частицы -->
+    <div class="blood-particles" id="particles"></div>
+
+    <div class="auth-wrapper">
+        <!-- Логотип -->
+        <div class="ornament-top">† † †</div>
+        <h1 class="auth-logo">SLAUGHTER</h1>
+
+        <!-- Карточка ВХОД -->
+        <div class="auth-card" id="loginCard">
+            <div class="auth-card-header">
+                <span class="auth-card-icon">🩸</span>
+                <h2>ВХОД В БЕЗДНУ</h2>
+            </div>
+            <div class="input-group">
+                <input type="text" placeholder="Имя пользователя" id="loginUser">
+                <span class="input-icon">👤</span>
+            </div>
+            <div class="input-group">
+                <input type="password" placeholder="Пароль" id="loginPass">
+                <span class="input-icon">🔒</span>
+            </div>
+            <button class="auth-btn" onclick="handleLogin()">
+                <span>ВОЙТИ</span>
+                <span class="btn-blood-drip"></span>
+            </button>
+            <div class="auth-switch">
+                Нет аккаунта? <a onclick="switchToRegister()">Продать душу</a>
+            </div>
+        </div>
+
+        <!-- Карточка РЕГИСТРАЦИЯ -->
+        <div class="auth-card" id="registerCard" style="display: none;">
+            <div class="auth-card-header">
+                <span class="auth-card-icon">📜</span>
+                <h2>РЕГИСТРАЦИЯ ДУШИ</h2>
+            </div>
+            <div class="input-group">
+                <input type="text" placeholder="Придумай имя" id="regUser">
+                <span class="input-icon">👤</span>
+            </div>
+            <div class="input-group">
+                <input type="email" placeholder="Твоя почта" id="regEmail">
+                <span class="input-icon">📧</span>
+            </div>
+            <div class="input-group">
+                <input type="password" placeholder="Пароль" id="regPass">
+                <span class="input-icon">🔒</span>
+            </div>
+            <button class="auth-btn" onclick="handleRegister()">
+                <span>ПРОДАТЬ ДУШУ</span>
+                <span class="btn-blood-drip"></span>
+            </button>
+            <div class="auth-switch">
+                Уже в бездне? <a onclick="switchToLogin()">Войти</a>
+            </div>
+        </div>
+
+        <!-- Подвал -->
+        <div class="auth-footer">Abandon all hope, ye who enter here</div>
+    </div>
+
+    <script>
+        // Если уже авторизован — на главную
+        if (sessionStorage.getItem('slaughter_user')) {
+            window.location.href = 'index.html';
+        }
+
+        // Генерация частиц
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 35; i++) {
+            const drop = document.createElement('div');
+            drop.classList.add('blood-drop');
+            drop.style.left = Math.random() * 100 + '%';
+            drop.style.animationDuration = (Math.random() * 5 + 4) + 's';
+            drop.style.animationDelay = Math.random() * 7 + 's';
+            drop.style.width = (Math.random() * 5 + 2) + 'px';
+            drop.style.height = drop.style.width;
+            particlesContainer.appendChild(drop);
+        }
+
+        // Переключение форм
+        function switchToRegister() {
+            document.getElementById('loginCard').style.display = 'none';
+            document.getElementById('registerCard').style.display = 'block';
+            document.getElementById('registerCard').style.animation = 'cardSlideIn 0.5s ease';
+        }
+
+        function switchToLogin() {
+            document.getElementById('registerCard').style.display = 'none';
+            document.getElementById('loginCard').style.display = 'block';
+            document.getElementById('loginCard').style.animation = 'cardSlideIn 0.5s ease';
+        }
+
+        // Вход
+        function handleLogin() {
+            const user = document.getElementById('loginUser').value.trim();
+            const pass = document.getElementById('loginPass').value.trim();
+
+            if (!user || !pass) {
+                shakeCard('loginCard');
+                return;
+            }
+
+            // Сохраняем пользователя
+            const savedUser = localStorage.getItem('slaughter_user_' + user);
+            if (savedUser) {
+                const userData = JSON.parse(savedUser);
+                if (userData.pass === pass) {
+                    sessionStorage.setItem('slaughter_user', user);
+                    window.location.href = 'index.html';
+                } else {
+                    shakeCard('loginCard');
+                    document.getElementById('loginPass').value = '';
+                }
+            } else {
+                // Для демо: пускаем всех с любым паролем
+                sessionStorage.setItem('slaughter_user', user);
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Регистрация
+        function handleRegister() {
+            const user = document.getElementById('regUser').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const pass = document.getElementById('regPass').value.trim();
+
+            if (!user || !email || !pass) {
+                shakeCard('registerCard');
+                return;
+            }
+
+            if (!email.includes('@')) {
+                shakeCard('registerCard');
+                document.getElementById('regEmail').value = '';
+                return;
+            }
+
+            // Сохраняем
+            const userData = { user, email, pass };
+            localStorage.setItem('slaughter_user_' + user, JSON.stringify(userData));
+            sessionStorage.setItem('slaughter_user', user);
+            window.location.href = 'index.html';
+        }
+
+        // Анимация тряски
+        function shakeCard(id) {
+            const card = document.getElementById(id);
+            card.style.animation = 'none';
+            card.offsetHeight;
+            card.style.animation = 'shake 0.5s ease';
+            setTimeout(() => card.style.animation = '', 500);
+        }
+
+        // Enter
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                if (document.getElementById('loginCard').style.display !== 'none') {
+                    handleLogin();
+                } else {
+                    handleRegister();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
