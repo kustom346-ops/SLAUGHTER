@@ -2,67 +2,6 @@
     'use strict';
 
     // ============================================
-    //  AUDIO
-    // ============================================
-    var audioCtx = null;
-
-    function playDrone() {
-        try {
-            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            var osc = audioCtx.createOscillator();
-            var gain = audioCtx.createGain();
-            osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(30, audioCtx.currentTime);
-            osc.frequency.linearRampToValueAtTime(15, audioCtx.currentTime + 4);
-            gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
-            gain.gain.linearRampToValueAtTime(0.12, audioCtx.currentTime + 1);
-            gain.gain.linearRampToValueAtTime(0.04, audioCtx.currentTime + 3.5);
-            gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 4);
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start(audioCtx.currentTime);
-            osc.stop(audioCtx.currentTime + 4);
-        } catch(e) {}
-    }
-
-    function playBassHit() {
-        if (!audioCtx) return;
-        try {
-            var osc = audioCtx.createOscillator();
-            var gain = audioCtx.createGain();
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(80, audioCtx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(20, audioCtx.currentTime + 0.4);
-            gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start(audioCtx.currentTime);
-            osc.stop(audioCtx.currentTime + 0.4);
-        } catch(e) {}
-    }
-
-    function playGlitchSound() {
-        if (!audioCtx) return;
-        try {
-            var bufferSize = audioCtx.sampleRate * 0.15;
-            var buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-            var data = buffer.getChannelData(0);
-            for (var i = 0; i < bufferSize; i++) {
-                data[i] = (Math.random() * 2 - 1) * 0.3;
-            }
-            var source = audioCtx.createBufferSource();
-            var gain = audioCtx.createGain();
-            source.buffer = buffer;
-            gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
-            source.connect(gain);
-            gain.connect(audioCtx.destination);
-            source.start(audioCtx.currentTime);
-        } catch(e) {}
-    }
-
-    // ============================================
     //  CREATE INTRO
     // ============================================
     function createIntro() {
@@ -171,6 +110,9 @@
         return intro;
     }
 
+    // ============================================
+    //  BLOOD BACKGROUND PARTICLES
+    // ============================================
     function createBloodBg() {
         var container = document.querySelector('.intro-blood-bg');
         if (!container) return;
@@ -184,11 +126,22 @@
             var dy = (Math.random() - 0.5) * 400;
             var dur = 2 + Math.random() * 4;
             var delay = Math.random() * 3;
-            p.style.cssText = 'width:' + size + 'px;height:' + (size * 1.7) + 'px;left:' + x + '%;top:' + y + '%;--dx:' + dx + 'px;--dy:' + dy + 'px;animation-duration:' + dur + 's;animation-delay:' + delay + 's;';
+            p.style.cssText = 
+                'width:' + size + 'px;' +
+                'height:' + (size * 1.7) + 'px;' +
+                'left:' + x + '%;' +
+                'top:' + y + '%;' +
+                '--dx:' + dx + 'px;' +
+                '--dy:' + dy + 'px;' +
+                'animation-duration:' + dur + 's;' +
+                'animation-delay:' + delay + 's;';
             container.appendChild(p);
         }
     }
 
+    // ============================================
+    //  BLOOD DRIPS
+    // ============================================
     function createDrips() {
         var container = document.querySelector('.intro-drips');
         if (!container) return;
@@ -202,7 +155,13 @@
                     var w = 1.5 + Math.random() * 3;
                     var dur = 0.5 + Math.random() * 1.5;
                     var del = Math.random() * 0.6;
-                    drip.style.cssText = 'left:' + x + '%;top:10%;width:' + w + 'px;height:' + h + 'px;animation-duration:' + dur + 's;animation-delay:' + del + 's;';
+                    drip.style.cssText = 
+                        'left:' + x + '%;' +
+                        'top:10%;' +
+                        'width:' + w + 'px;' +
+                        'height:' + h + 'px;' +
+                        'animation-duration:' + dur + 's;' +
+                        'animation-delay:' + del + 's;';
                     container.appendChild(drip);
                     setTimeout(function() {
                         if (drip.parentNode) drip.parentNode.removeChild(drip);
@@ -212,6 +171,9 @@
         }
     }
 
+    // ============================================
+    //  SPIRAL PARTICLES
+    // ============================================
     function createSpiral() {
         var container = document.querySelector('.intro-spiral-parts');
         if (!container) return;
@@ -223,11 +185,19 @@
             var radius = 3 + (i / count) * 140;
             var delay = i * 0.014;
             var size = 3.5 - (i / count) * 2.8;
-            part.style.cssText = 'width:' + size + 'px;height:' + size + 'px;--a:' + angle + 'rad;--r:' + radius + 'px;animation-delay:' + delay + 's;';
+            part.style.cssText = 
+                'width:' + size + 'px;' +
+                'height:' + size + 'px;' +
+                '--a:' + angle + 'rad;' +
+                '--r:' + radius + 'px;' +
+                'animation-delay:' + delay + 's;';
             container.appendChild(part);
         }
     }
 
+    // ============================================
+    //  SHRAPNEL
+    // ============================================
     function createShrapnel() {
         var container = document.querySelector('.intro-shrapnel');
         if (!container) return;
@@ -241,11 +211,23 @@
             var dist = 100 + Math.random() * 300;
             var dur = 0.6 + Math.random() * 1.2;
             var delay = Math.random() * 0.3;
-            shard.style.cssText = 'width:' + size + 'px;height:' + (size * 0.4) + 'px;left:' + x + '%;top:' + y + '%;--angle:' + angle + 'deg;--dist:' + dist + 'px;animation-duration:' + dur + 's;animation-delay:' + delay + 's;animation-fill-mode:forwards;';
+            shard.style.cssText = 
+                'width:' + size + 'px;' +
+                'height:' + (size * 0.4) + 'px;' +
+                'left:' + x + '%;' +
+                'top:' + y + '%;' +
+                '--angle:' + angle + 'deg;' +
+                '--dist:' + dist + 'px;' +
+                'animation-duration:' + dur + 's;' +
+                'animation-delay:' + delay + 's;' +
+                'animation-fill-mode:forwards;';
             container.appendChild(shard);
         }
     }
 
+    // ============================================
+    //  SCREEN SHAKE
+    // ============================================
     function screenShake() {
         var shake = document.querySelector('.intro-shake');
         if (!shake) return;
@@ -253,6 +235,9 @@
         setTimeout(function() { shake.classList.remove('shaking'); }, 400);
     }
 
+    // ============================================
+    //  FLASH
+    // ============================================
     function triggerFlash() {
         var flash = document.querySelector('.intro-flash');
         if (!flash) return;
@@ -260,7 +245,11 @@
         setTimeout(function() { flash.classList.remove('active'); }, 300);
     }
 
+    // ============================================
+    //  REDIRECT
+    // ============================================
     function goToSite() {
+        sessionStorage.setItem('intro_done', '1');
         window.location.href = 'index.html';
     }
 
@@ -271,23 +260,19 @@
         var intro = createIntro();
         createBloodBg();
         createSpiral();
-        playDrone();
 
         setTimeout(function() {
             triggerFlash();
             screenShake();
-            playBassHit();
         }, 1700);
 
         setTimeout(function() {
             screenShake();
-            playGlitchSound();
             createShrapnel();
         }, 2000);
 
         setTimeout(createDrips, 1700);
 
-        // Редирект на сайт после интро
         setTimeout(function() {
             intro.classList.add('fade-out');
             setTimeout(goToSite, 700);
