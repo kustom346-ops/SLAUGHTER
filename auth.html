@@ -5,62 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SLAUGHTER — Врата в бездну</title>
     <link rel="stylesheet" href="style.css">
-    <!-- EmailJS -->
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <style>
-        /* Стили для кода подтверждения */
-        .verify-section {
+        .email-check-status {
             display: none;
+            font-size: 12px;
+            margin-top: -10px;
+            margin-bottom: 10px;
+            padding: 8px 12px;
+            border-radius: 8px;
             text-align: center;
-            animation: cardSlideIn 0.5s ease;
         }
-        .verify-section.active {
+        .email-check-status.show {
             display: block;
         }
-        .code-inputs {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin-bottom: 20px;
+        .email-check-status.valid {
+            background: rgba(0, 139, 0, 0.15);
+            border: 1px solid #1a6b1a;
+            color: #4a4;
         }
-        .code-inputs input {
-            width: 50px;
-            height: 60px;
-            text-align: center;
-            font-size: 24px;
-            font-weight: 700;
-            background: rgba(20, 20, 20, 0.9);
-            border: 2px solid #2a2a2a;
-            border-radius: 10px;
-            color: #fff;
-            outline: none;
-            transition: all 0.3s;
+        .email-check-status.invalid {
+            background: rgba(139, 0, 0, 0.15);
+            border: 1px solid var(--blood);
+            color: #a44;
         }
-        .code-inputs input:focus {
-            border-color: var(--blood-bright);
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
-        }
-        .timer-text {
-            color: #888;
-            font-size: 13px;
-            margin-bottom: 15px;
-        }
-        .timer-text span {
-            color: var(--blood-bright);
-            font-weight: 700;
-        }
-        .resend-link {
-            color: #666;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: none;
-        }
-        .resend-link.show {
-            display: inline;
-        }
-        .resend-link:hover {
-            color: var(--blood-bright);
+        .email-check-status.checking {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid #444;
+            color: #aaa;
         }
         .register-success {
             display: none;
@@ -112,7 +83,7 @@
 
         <!-- Карточка РЕГИСТРАЦИЯ -->
         <div class="auth-card" id="registerCard" style="display: none;">
-            <!-- Шаг 1: Форма -->
+            <!-- Форма регистрации -->
             <div id="registerForm">
                 <div class="auth-card-header">
                     <span class="auth-card-icon">📜</span>
@@ -123,11 +94,12 @@
                     <span class="input-icon">👤</span>
                 </div>
                 <div class="input-group">
-                    <input type="email" placeholder="Твоя почта (на неё придёт код)" id="regEmail">
+                    <input type="email" placeholder="Твоя почта" id="regEmail" onblur="checkEmailExists()">
                     <span class="input-icon">📧</span>
                 </div>
+                <div class="email-check-status" id="emailCheckStatus"></div>
                 <div class="input-group">
-                    <input type="password" placeholder="Пароль" id="regPass">
+                    <input type="password" placeholder="Пароль (мин. 6 символов)" id="regPass">
                     <span class="input-icon">🔒</span>
                 </div>
                 <div class="input-group">
@@ -142,36 +114,7 @@
                 </div>
             </div>
 
-            <!-- Шаг 2: Подтверждение кода -->
-            <div class="verify-section" id="verifySection">
-                <div class="auth-card-header">
-                    <span class="auth-card-icon">📩</span>
-                    <h2>ПОДТВЕРЖДЕНИЕ</h2>
-                </div>
-                <p style="color: #aaa; font-size: 13px; margin-bottom: 15px; text-align: center;">
-                    Мы отправили 6-значный код на почту<br><strong id="verifyEmailDisplay" style="color: #fff;"></strong>
-                </p>
-                <div class="code-inputs" id="codeInputs">
-                    <input type="text" maxlength="1" class="code-input" oninput="moveToNext(this)" onkeydown="moveToPrev(event, this)">
-                    <input type="text" maxlength="1" class="code-input" oninput="moveToNext(this)" onkeydown="moveToPrev(event, this)">
-                    <input type="text" maxlength="1" class="code-input" oninput="moveToNext(this)" onkeydown="moveToPrev(event, this)">
-                    <input type="text" maxlength="1" class="code-input" oninput="moveToNext(this)" onkeydown="moveToPrev(event, this)">
-                    <input type="text" maxlength="1" class="code-input" oninput="moveToNext(this)" onkeydown="moveToPrev(event, this)">
-                    <input type="text" maxlength="1" class="code-input" oninput="moveToNext(this)" onkeydown="moveToPrev(event, this)">
-                </div>
-                <div class="timer-text">
-                    Код истекает через: <span id="timerDisplay">5:00</span>
-                </div>
-                <a class="resend-link" id="resendLink" onclick="resendCode()">Отправить код повторно</a>
-                <button class="auth-btn" onclick="verifyCode()" style="margin-top: 10px;">
-                    <span>ПОДТВЕРДИТЬ</span>
-                </button>
-                <div class="auth-switch">
-                    <a onclick="switchToRegister()">← Назад к регистрации</a>
-                </div>
-            </div>
-
-            <!-- Шаг 3: Успех -->
+            <!-- Успех -->
             <div class="register-success" id="registerSuccess">
                 <div class="success-icon">✅</div>
                 <h2 style="color: #4a4; margin: 15px 0; font-family: 'Cinzel', serif;">ДУША ПРИНЯТА</h2>
@@ -185,17 +128,6 @@
     </div>
 
     <script>
-        // ===== ИНИЦИАЛИЗАЦИЯ EMAILJS =====
-        (function() {
-            emailjs.init("YOUR_PUBLIC_KEY"); // ЗАМЕНИ НА СВОЙ КЛЮЧ!
-        })();
-
-        // ===== ПЕРЕМЕННЫЕ =====
-        let generatedCode = '';
-        let codeExpiry = 0;
-        let timerInterval = null;
-        let pendingUser = null;
-
         // ===== ЧАСТИЦЫ =====
         const particlesContainer = document.getElementById('particles');
         for (let i = 0; i < 35; i++) {
@@ -219,17 +151,16 @@
             document.getElementById('loginCard').style.display = 'none';
             document.getElementById('registerCard').style.display = 'block';
             document.getElementById('registerForm').style.display = 'block';
-            document.getElementById('verifySection').classList.remove('active');
             document.getElementById('registerSuccess').classList.remove('active');
             document.getElementById('registerCard').style.animation = 'cardSlideIn 0.5s ease';
-            stopTimer();
+            hideEmailStatus();
         }
 
         function switchToLogin() {
             document.getElementById('registerCard').style.display = 'none';
             document.getElementById('loginCard').style.display = 'block';
             document.getElementById('loginCard').style.animation = 'cardSlideIn 0.5s ease';
-            stopTimer();
+            hideEmailStatus();
         }
 
         // ===== ВХОД =====
@@ -265,6 +196,70 @@
             }
         }
 
+        // ===== ПРОВЕРКА ПОЧТЫ НА СУЩЕСТВОВАНИЕ =====
+        let emailCheckTimeout = null;
+
+        function checkEmailExists() {
+            const email = document.getElementById('regEmail').value.trim();
+            const statusDiv = document.getElementById('emailCheckStatus');
+
+            // Очищаем предыдущий таймаут
+            if (emailCheckTimeout) clearTimeout(emailCheckTimeout);
+
+            if (!email) {
+                hideEmailStatus();
+                return;
+            }
+
+            if (!isValidEmail(email)) {
+                showEmailStatus('invalid', '❌ Некорректный формат почты');
+                return;
+            }
+
+            // Показываем проверку
+            showEmailStatus('checking', '⏳ Проверяем почту...');
+
+            // Задержка чтобы не спамить при вводе
+            emailCheckTimeout = setTimeout(() => {
+                // Проверяем формат (более строгая проверка)
+                if (!isValidEmailStrict(email)) {
+                    showEmailStatus('invalid', '❌ Такая почта не может существовать');
+                    return;
+                }
+
+                // Проверяем не занята ли почта
+                let emailExists = false;
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    if (key.startsWith('slaughter_user_')) {
+                        const data = JSON.parse(localStorage.getItem(key));
+                        if (data.email === email) {
+                            emailExists = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (emailExists) {
+                    showEmailStatus('invalid', '❌ Эта почта уже используется');
+                } else {
+                    showEmailStatus('valid', '✅ Почта подтверждена');
+                }
+            }, 600);
+        }
+
+        function showEmailStatus(type, message) {
+            const statusDiv = document.getElementById('emailCheckStatus');
+            statusDiv.className = 'email-check-status show ' + type;
+            statusDiv.textContent = message;
+        }
+
+        function hideEmailStatus() {
+            const statusDiv = document.getElementById('emailCheckStatus');
+            statusDiv.className = 'email-check-status';
+            statusDiv.textContent = '';
+        }
+
         // ===== РЕГИСТРАЦИЯ =====
         function handleRegister() {
             const user = document.getElementById('regUser').value.trim();
@@ -296,7 +291,7 @@
                 return;
             }
 
-            // Проверяем не занят ли email
+            // Проверяем не занята ли почта
             for (let i = 0; i < localStorage.length; i++) {
                 const key = localStorage.key(i);
                 if (key.startsWith('slaughter_user_')) {
@@ -305,142 +300,54 @@
                         alert('Эта почта уже используется!');
                         return;
                     }
+                    if (data.user === user) {
+                        alert('Это имя уже занято!');
+                        return;
+                    }
                 }
             }
 
-            // Сохраняем данные и генерируем код
-            pendingUser = { user, email, pass };
-            generatedCode = generateCode();
-            codeExpiry = Date.now() + 5 * 60 * 1000; // 5 минут
+            // Сохраняем пользователя
+            const userData = { user, email, pass, registeredAt: new Date().toISOString() };
+            localStorage.setItem('slaughter_user_' + user, JSON.stringify(userData));
+            sessionStorage.setItem('slaughter_user', user);
 
-            // Отправляем код на почту
-            sendVerificationEmail(email, generatedCode);
-
-            // Показываем шаг верификации
+            // Показываем успех
             document.getElementById('registerForm').style.display = 'none';
-            document.getElementById('verifySection').classList.add('active');
-            document.getElementById('verifyEmailDisplay').textContent = email;
-            document.getElementById('registerCard').style.animation = 'none';
-            document.getElementById('registerCard').offsetHeight;
-            document.getElementById('registerCard').style.animation = 'cardSlideIn 0.3s ease';
+            document.getElementById('registerSuccess').classList.add('active');
 
-            // Очищаем поля ввода кода
-            document.querySelectorAll('.code-input').forEach(i => i.value = '');
-            document.querySelector('.code-input').focus();
-
-            // Запускаем таймер
-            startTimer();
-        }
-
-        // ===== ОТПРАВКА КОДА НА ПОЧТУ =====
-        function sendVerificationEmail(email, code) {
-            // ВАРИАНТ 1: EmailJS (нужно настроить)
-            // emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", {
-            //     to_email: email,
-            //     code: code,
-            //     user_name: pendingUser.user
-            // });
-
-            // ВАРИАНТ 2: Для демо - показываем код в консоли и alert
-            console.log('=== КОД ПОДТВЕРЖДЕНИЯ ===');
-            console.log('Почта:', email);
-            console.log('Код:', code);
-            console.log('=========================');
-
-            alert(`📧 ДЕМО-РЕЖИМ\n\nКод отправлен на ${email}\n\nКод подтверждения: ${code}\n\n(В реальности код придёт на почту. Сейчас используй этот код для теста.)`);
-        }
-
-        // ===== ПРОВЕРКА КОДА =====
-        function verifyCode() {
-            const inputs = document.querySelectorAll('.code-input');
-            let enteredCode = '';
-            inputs.forEach(i => enteredCode += i.value);
-
-            if (enteredCode.length < 6) {
-                shakeCard('registerCard');
-                alert('Введи все 6 цифр кода!');
-                return;
-            }
-
-            if (Date.now() > codeExpiry) {
-                alert('Код истёк! Запроси новый.');
-                return;
-            }
-
-            if (enteredCode === generatedCode) {
-                // Успех!
-                const userDataKey = 'slaughter_user_' + pendingUser.user;
-                localStorage.setItem(userDataKey, JSON.stringify(pendingUser));
-                sessionStorage.setItem('slaughter_user', pendingUser.user);
-
-                // Показываем успех
-                document.getElementById('verifySection').classList.remove('active');
-                document.getElementById('registerSuccess').classList.add('active');
-                stopTimer();
-
-                // Редирект через 2 секунды
-                setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 2000);
-            } else {
-                shakeCard('registerCard');
-                alert('Неверный код! Попробуй ещё раз.');
-                document.querySelectorAll('.code-input').forEach(i => i.value = '');
-                document.querySelector('.code-input').focus();
-            }
-        }
-
-        // ===== ПОВТОРНАЯ ОТПРАВКА =====
-        function resendCode() {
-            if (!pendingUser) return;
-
-            generatedCode = generateCode();
-            codeExpiry = Date.now() + 5 * 60 * 1000;
-            sendVerificationEmail(pendingUser.email, generatedCode);
-
-            document.querySelectorAll('.code-input').forEach(i => i.value = '');
-            document.querySelector('.code-input').focus();
-            document.getElementById('resendLink').classList.remove('show');
-
-            startTimer();
-        }
-
-        // ===== ТАЙМЕР =====
-        function startTimer() {
-            stopTimer();
-            updateTimer();
-            timerInterval = setInterval(updateTimer, 1000);
-        }
-
-        function stopTimer() {
-            if (timerInterval) {
-                clearInterval(timerInterval);
-                timerInterval = null;
-            }
-        }
-
-        function updateTimer() {
-            const remaining = Math.max(0, Math.ceil((codeExpiry - Date.now()) / 1000));
-            const minutes = Math.floor(remaining / 60);
-            const seconds = remaining % 60;
-            document.getElementById('timerDisplay').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-
-            if (remaining <= 60) {
-                document.getElementById('resendLink').classList.add('show');
-            }
-
-            if (remaining <= 0) {
-                stopTimer();
-            }
+            // Редирект
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 2000);
         }
 
         // ===== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ =====
-        function generateCode() {
-            return Math.floor(100000 + Math.random() * 900000).toString();
-        }
-
         function isValidEmail(email) {
             return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        function isValidEmailStrict(email) {
+            // Проверяем что домен выглядит реальным
+            const domain = email.split('@')[1];
+            if (!domain) return false;
+
+            // Запрещаем временные почты
+            const tempDomains = [
+                'tempmail', 'temp-mail', 'guerrillamail', '10minutemail', 'throwaway',
+                'mailinator', 'yopmail', 'sharklasers', 'trashmail', 'dispostable'
+            ];
+
+            for (const td of tempDomains) {
+                if (domain.includes(td)) return false;
+            }
+
+            // Проверяем что домен содержит точку и минимум 2 символа в TLD
+            const parts = domain.split('.');
+            if (parts.length < 2) return false;
+            if (parts[parts.length - 1].length < 2) return false;
+
+            return true;
         }
 
         function shakeCard(id) {
@@ -451,53 +358,14 @@
             setTimeout(() => card.style.animation = '', 500);
         }
 
-        // ===== НАВИГАЦИЯ ПО ИНПУТАМ КОДА =====
-        function moveToNext(input) {
-            if (input.value.length === 1) {
-                const next = input.nextElementSibling;
-                if (next && next.classList.contains('code-input')) {
-                    next.focus();
-                }
-            }
-        }
-
-        function moveToPrev(event, input) {
-            if (event.key === 'Backspace' && input.value.length === 0) {
-                const prev = input.previousElementSibling;
-                if (prev && prev.classList.contains('code-input')) {
-                    prev.focus();
-                }
-            }
-        }
-
-        // Вставка кода из буфера обмена
-        document.addEventListener('paste', function(e) {
-            if (document.activeElement && document.activeElement.classList.contains('code-input')) {
-                e.preventDefault();
-                const pasted = (e.clipboardData || window.clipboardData).getData('text');
-                const digits = pasted.replace(/\D/g, '').slice(0, 6);
-                const inputs = document.querySelectorAll('.code-input');
-                digits.split('').forEach((digit, i) => {
-                    if (inputs[i]) inputs[i].value = digit;
-                });
-                if (inputs[digits.length - 1]) inputs[digits.length - 1].focus();
-            }
-        });
-
-        // Enter на форме регистрации
+        // ===== ENTER =====
         document.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 const loginCard = document.getElementById('loginCard');
-                const registerCard = document.getElementById('registerCard');
-
                 if (loginCard.style.display !== 'none') {
                     handleLogin();
-                } else if (registerCard.style.display !== 'none') {
-                    if (document.getElementById('registerForm').style.display !== 'none') {
-                        handleRegister();
-                    } else if (document.getElementById('verifySection').classList.contains('active')) {
-                        verifyCode();
-                    }
+                } else {
+                    handleRegister();
                 }
             }
         });
