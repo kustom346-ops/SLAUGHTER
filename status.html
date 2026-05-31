@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SLAUGHTER - STATUS</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="noise"></div>
+    <div class="scanlines"></div>
+    <div class="page-transition"></div>
+
+    <header>
+        <nav>
+            <a href="index.html" class="logo">
+                <span class="logo-text">SLAUGHTER</span>
+                <span class="logo-line"></span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="features.html">FEATURES</a></li>
+                <li><a href="download.html">DOWNLOAD</a></li>
+                <li><a href="status.html" class="active">STATUS</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <main class="page status-page">
+        <section class="page-hero">
+            <h1 class="page-title">STATUS</h1>
+            <p class="page-subtitle">LIVE DETECTION MONITOR</p>
+        </section>
+
+        <div class="status-circle-wrap">
+            <div class="status-circle">
+                <div class="status-ring"></div>
+                <div class="status-dot"></div>
+            </div>
+            <p class="status-big-text">UNDETECTED</p>
+            <p class="status-update">Last check: <span id="lastCheck">--</span></p>
+        </div>
+
+        <div class="servers">
+            <h2 class="section-title">SERVER STATUS</h2>
+            <div class="server-list">
+                <div class="server-row">
+                    <span class="srv-name">HYPIXEL</span>
+                    <span class="srv-status safe">SAFE</span>
+                    <span class="srv-info">No detection • Legit config</span>
+                </div>
+                <div class="server-row">
+                    <span class="srv-name">MINEMEN</span>
+                    <span class="srv-status safe">SAFE</span>
+                    <span class="srv-info">No detection • Balanced config</span>
+                </div>
+                <div class="server-row">
+                    <span class="srv-name">PVPLAND</span>
+                    <span class="srv-status warn">CAUTION</span>
+                    <span class="srv-info">Partial detection • Strict config</span>
+                </div>
+                <div class="server-row">
+                    <span class="srv-name">UNIVERSAL</span>
+                    <span class="srv-status safe">SAFE</span>
+                    <span class="srv-info">No detection • Any config</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="changelog">
+            <h2 class="section-title">UPDATES</h2>
+            <div class="update-item">
+                <span class="upd-date">2024.12.15</span>
+                <div><strong>v2.4.1</strong><p>Hypixel bypass update. Fixed reach detection.</p></div>
+            </div>
+            <div class="update-item">
+                <span class="upd-date">2024.12.10</span>
+                <div><strong>v2.4.0</strong><p>Scripting API. New GUI framework.</p></div>
+            </div>
+            <div class="update-item">
+                <span class="upd-date">2024.12.01</span>
+                <div><strong>v2.3.5</strong><p>Performance boost. AMD fix. New ESP modes.</p></div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
