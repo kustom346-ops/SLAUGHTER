@@ -1,0 +1,469 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #000;
+    font-family: 'Inter', 'Arial Black', sans-serif;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+}
+
+/* ============================================ */
+/*  INTRO OVERLAY                               */
+/* ============================================ */
+.intro-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.8s ease;
+    overflow: hidden;
+}
+
+.intro-overlay.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* ============================================ */
+/*  SCREEN SHAKE                                */
+/* ============================================ */
+.intro-shake {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.intro-shake.shaking {
+    animation: screen-shake 0.4s ease-out;
+}
+
+@keyframes screen-shake {
+    0%, 100% { transform: translate(0); }
+    10% { transform: translate(-8px, 4px); }
+    20% { transform: translate(8px, -6px); }
+    30% { transform: translate(-4px, -3px); }
+    40% { transform: translate(6px, 5px); }
+    50% { transform: translate(-7px, -2px); }
+    60% { transform: translate(3px, 6px); }
+    70% { transform: translate(-5px, -4px); }
+    80% { transform: translate(7px, 2px); }
+    90% { transform: translate(-2px, -5px); }
+}
+
+/* ============================================ */
+/*  PULSE BACKGROUND                            */
+/* ============================================ */
+.intro-pulse {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(180,0,0,0.1) 0%, transparent 65%);
+    border-radius: 50%;
+    animation: pulse-bg 2s ease-in-out infinite;
+}
+
+@keyframes pulse-bg {
+    0%, 100% { transform: translate(-50%, -50%) scale(0.7); opacity: 0.3; }
+    50% { transform: translate(-50%, -50%) scale(1.4); opacity: 0.8; }
+}
+
+/* ============================================ */
+/*  FLASH                                       */
+/* ============================================ */
+.intro-flash {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 0, 0, 0.15);
+    z-index: 10002;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.1s ease;
+}
+
+.intro-flash.active {
+    opacity: 1;
+    transition: opacity 0s;
+}
+
+/* ============================================ */
+/*  MAIN CONTENT                                */
+/* ============================================ */
+.intro-content {
+    position: relative;
+    z-index: 10001;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+/* ============================================ */
+/*  TEXT STAGE - SVG                            */
+/* ============================================ */
+.intro-text-stage {
+    width: 90vw;
+    max-width: 1000px;
+    padding-left: 15px;
+    overflow: visible;
+}
+
+.intro-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    overflow: visible;
+}
+
+/* ============================================ */
+/*  CLIENT SUBTITLE                             */
+/* ============================================ */
+.intro-client-wrap {
+    opacity: 0;
+    animation: client-in 0.6s 2.1s ease forwards;
+}
+
+@keyframes client-in {
+    0% { opacity: 0; transform: translateY(18px); filter: blur(5px); }
+    100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+.intro-client-text {
+    font-size: 1.6rem;
+    font-weight: 900;
+    letter-spacing: 20px;
+    color: #999;
+    text-shadow: 0 0 30px rgba(255,0,0,0.5), 0 0 60px rgba(200,0,0,0.2);
+}
+
+.intro-client-line {
+    width: 0;
+    height: 2px;
+    background: #cc0000;
+    margin: 8px auto 0;
+    box-shadow: 0 0 12px #ff0000, 0 0 24px #cc0000;
+    animation: line-grow 0.7s 2.4s ease forwards;
+}
+
+@keyframes line-grow {
+    to { width: 200px; }
+}
+
+/* ============================================ */
+/*  SPIRAL                                      */
+/* ============================================ */
+.intro-spiral-wrap {
+    width: 160px;
+    height: 160px;
+    position: relative;
+    opacity: 0;
+    animation: spiral-show 0.5s 0.6s ease forwards;
+}
+
+@keyframes spiral-show {
+    to { opacity: 1; }
+}
+
+.intro-spiral-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    border: 1px solid rgba(255,0,0,0.35);
+    animation: ring-out 2s ease-out infinite;
+    pointer-events: none;
+}
+
+.ring-1 { animation-delay: 0s; }
+.ring-2 { animation-delay: 0.5s; }
+.ring-3 { animation-delay: 1s; }
+.ring-4 { animation-delay: 0.25s; }
+.ring-5 { animation-delay: 0.75s; }
+
+@keyframes ring-out {
+    0% { width: 10px; height: 10px; opacity: 0.6; }
+    100% { width: 160px; height: 160px; opacity: 0; }
+}
+
+.intro-spiral-core {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 6px;
+    height: 6px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 20px #ff0000, 0 0 40px #ff0000, 0 0 60px #cc0000;
+    animation: core-beat 0.7s ease-in-out infinite;
+    z-index: 2;
+}
+
+@keyframes core-beat {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-50%, -50%) scale(2.5); }
+}
+
+.intro-spiral-parts {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+}
+
+.spiral-part {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background: #ff0000;
+    border-radius: 50%;
+    box-shadow: 0 0 6px #ff3333, 0 0 14px #ff0000;
+    pointer-events: none;
+    animation: spiral-in 2s ease-out forwards;
+}
+
+@keyframes spiral-in {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg) translateX(var(--r)) rotate(0deg) scale(0);
+        opacity: 0;
+    }
+    15% { opacity: 1; }
+    60% { opacity: 0.8; }
+    100% {
+        transform: translate(-50%, -50%) rotate(var(--a)) translateX(0px) rotate(calc(var(--a) * -1)) scale(0.3);
+        opacity: 0;
+    }
+}
+
+/* ============================================ */
+/*  SHRAPNEL                                    */
+/* ============================================ */
+.intro-shrapnel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10003;
+}
+
+.shard {
+    position: absolute;
+    background: #ff0000;
+    border-radius: 1px;
+    box-shadow: 0 0 6px #ff0000, 0 0 12px #ff4444;
+    opacity: 0;
+    animation: shard-fly ease-out forwards;
+}
+
+@keyframes shard-fly {
+    0% {
+        transform: translate(0, 0) rotate(0deg) scale(1);
+        opacity: 1;
+    }
+    30% { opacity: 1; }
+    100% {
+        transform: 
+            translate(
+                calc(cos(var(--angle)) * var(--dist)),
+                calc(sin(var(--angle)) * var(--dist))
+            )
+            rotate(calc(var(--angle) * 2))
+            scale(0);
+        opacity: 0;
+    }
+}
+
+/* ============================================ */
+/*  INIT TEXT                                   */
+/* ============================================ */
+.intro-init-text {
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 8px;
+    color: #555;
+    opacity: 0;
+    animation: init-blink 0.6s 2.8s ease infinite;
+}
+
+@keyframes init-blink {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 1; }
+}
+
+/* ============================================ */
+/*  BLOOD BACKGROUND                            */
+/* ============================================ */
+.intro-blood-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.blood-particle {
+    position: absolute;
+    background: #cc0000;
+    border-radius: 55% 45% 60% 40% / 45% 55% 40% 60%;
+    box-shadow: 0 0 6px rgba(255,0,0,0.5);
+    animation: blood-drift ease-out forwards;
+}
+
+@keyframes blood-drift {
+    0% { transform: translate(0, 0) scale(0); opacity: 0; }
+    20% { opacity: 1; }
+    70% { opacity: 0.5; }
+    100% { transform: translate(var(--dx), var(--dy)) scale(0.2); opacity: 0; }
+}
+
+/* ============================================ */
+/*  BLOOD DRIPS                                 */
+/* ============================================ */
+.intro-drips {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.blood-drip {
+    position: absolute;
+    background: linear-gradient(to bottom, 
+        rgba(220,0,0,0.9) 0%, 
+        rgba(255,30,30,0.75) 30%,
+        rgba(180,0,0,0.4) 65%,
+        transparent 100%
+    );
+    border-radius: 0 0 2px 2px;
+    transform-origin: top;
+    filter: blur(0.3px);
+    animation: drip-fall ease-in forwards;
+}
+
+@keyframes drip-fall {
+    0% { transform: scaleY(0); opacity: 0; }
+    25% { opacity: 1; }
+    60% { transform: scaleY(1); opacity: 1; }
+    100% { transform: scaleY(1) translateY(10px); opacity: 0; }
+}
+
+/* ============================================ */
+/*  VIGNETTE & SCANLINES                        */
+/* ============================================ */
+.intro-vignette {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at center, transparent 15%, rgba(0,0,0,0.65) 60%, #000 100%);
+    pointer-events: none;
+}
+
+.intro-scanlines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.05) 2px, rgba(0,0,0,0.05) 4px);
+    pointer-events: none;
+    animation: scan-move 0.04s linear infinite;
+}
+
+@keyframes scan-move {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(4px); }
+}
+
+/* ============================================ */
+/*  CORNERS                                     */
+/* ============================================ */
+.intro-corner {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    pointer-events: none;
+    opacity: 0;
+    animation: corner-in 0.5s 0.5s ease forwards;
+}
+
+@keyframes corner-in { to { opacity: 0.4; } }
+
+.intro-corner::before,
+.intro-corner::after {
+    content: '';
+    position: absolute;
+    background: #cc0000;
+    box-shadow: 0 0 8px #ff0000;
+}
+
+.c-tl { top: 25px; left: 25px; }
+.c-tr { top: 25px; right: 25px; }
+.c-bl { bottom: 25px; left: 25px; }
+.c-br { bottom: 25px; right: 25px; }
+
+.c-tl::before, .c-tr::before, .c-bl::before, .c-br::before { width: 25px; height: 1px; }
+.c-tl::after, .c-tr::after, .c-bl::after, .c-br::after { width: 1px; height: 25px; }
+
+.c-tl::before { top: 0; left: 0; }
+.c-tl::after  { top: 0; left: 0; }
+.c-tr::before { top: 0; right: 0; }
+.c-tr::after  { top: 0; right: 0; }
+.c-bl::before { bottom: 0; left: 0; }
+.c-bl::after  { bottom: 0; left: 0; }
+.c-br::before { bottom: 0; right: 0; }
+.c-br::after  { bottom: 0; right: 0; }
+
+/* ============================================ */
+/*  SCREEN GLITCH                               */
+/* ============================================ */
+.intro-overlay::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    z-index: 10004;
+    pointer-events: none;
+    animation: screen-glitch 3s infinite;
+}
+
+@keyframes screen-glitch {
+    0%, 90%, 100% { background: transparent; transform: translate(0); }
+    91% { background: rgba(255, 0, 0, 0.03); transform: translate(-20px, 3px); }
+    92% { background: rgba(0, 255, 255, 0.02); transform: translate(15px, -2px); }
+    93% { background: transparent; transform: translate(0); }
+    96% { background: rgba(255, 0, 0, 0.02); transform: translate(-5px, 1px); }
+    97% { background: transparent; transform: translate(0); }
+}
