@@ -5,14 +5,86 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SLAUGHTER — Врата в бездну</title>
     <link rel="stylesheet" href="style.css">
+    <!-- EmailJS -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <style>
+        /* Стили для кода подтверждения */
+        .verify-section {
+            display: none;
+            text-align: center;
+            animation: cardSlideIn 0.5s ease;
+        }
+        .verify-section.active {
+            display: block;
+        }
+        .code-inputs {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .code-inputs input {
+            width: 50px;
+            height: 60px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: 700;
+            background: rgba(20, 20, 20, 0.9);
+            border: 2px solid #2a2a2a;
+            border-radius: 10px;
+            color: #fff;
+            outline: none;
+            transition: all 0.3s;
+        }
+        .code-inputs input:focus {
+            border-color: var(--blood-bright);
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+        }
+        .timer-text {
+            color: #888;
+            font-size: 13px;
+            margin-bottom: 15px;
+        }
+        .timer-text span {
+            color: var(--blood-bright);
+            font-weight: 700;
+        }
+        .resend-link {
+            color: #666;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: none;
+        }
+        .resend-link.show {
+            display: inline;
+        }
+        .resend-link:hover {
+            color: var(--blood-bright);
+        }
+        .register-success {
+            display: none;
+            text-align: center;
+            animation: cardSlideIn 0.5s ease;
+        }
+        .register-success.active {
+            display: block;
+        }
+        .success-icon {
+            font-size: 60px;
+            animation: iconFloat 1s ease;
+        }
+        @keyframes cardSlideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
 </head>
 <body class="auth-page">
 
-    <!-- Кровавые частицы -->
     <div class="blood-particles" id="particles"></div>
 
     <div class="auth-wrapper">
-        <!-- Логотип -->
         <div class="ornament-top">† † †</div>
         <h1 class="auth-logo">SLAUGHTER</h1>
 
@@ -23,7 +95,7 @@
                 <h2>ВХОД В БЕЗДНУ</h2>
             </div>
             <div class="input-group">
-                <input type="text" placeholder="Имя пользователя" id="loginUser">
+                <input type="text" placeholder="Имя пользователя или email" id="loginUser">
                 <span class="input-icon">👤</span>
             </div>
             <div class="input-group">
@@ -32,7 +104,6 @@
             </div>
             <button class="auth-btn" onclick="handleLogin()">
                 <span>ВОЙТИ</span>
-                <span class="btn-blood-drip"></span>
             </button>
             <div class="auth-switch">
                 Нет аккаунта? <a onclick="switchToRegister()">Продать душу</a>
@@ -41,42 +112,91 @@
 
         <!-- Карточка РЕГИСТРАЦИЯ -->
         <div class="auth-card" id="registerCard" style="display: none;">
-            <div class="auth-card-header">
-                <span class="auth-card-icon">📜</span>
-                <h2>РЕГИСТРАЦИЯ ДУШИ</h2>
+            <!-- Шаг 1: Форма -->
+            <div id="registerForm">
+                <div class="auth-card-header">
+                    <span class="auth-card-icon">📜</span>
+                    <h2>РЕГИСТРАЦИЯ ДУШИ</h2>
+                </div>
+                <div class="input-group">
+                    <input type="text" placeholder="Придумай имя" id="regUser">
+                    <span class="input-icon">👤</span>
+                </div>
+                <div class="input-group">
+                    <input type="email" placeholder="Твоя почта (на неё придёт код)" id="regEmail">
+                    <span class="input-icon">📧</span>
+                </div>
+                <div class="input-group">
+                    <input type="password" placeholder="Пароль" id="regPass">
+                    <span class="input-icon">🔒</span>
+                </div>
+                <div class="input-group">
+                    <input type="password" placeholder="Повтори пароль" id="regPassConfirm">
+                    <span class="input-icon">🔒</span>
+                </div>
+                <button class="auth-btn" onclick="handleRegister()">
+                    <span>ПРОДАТЬ ДУШУ</span>
+                </button>
+                <div class="auth-switch">
+                    Уже в бездне? <a onclick="switchToLogin()">Войти</a>
+                </div>
             </div>
-            <div class="input-group">
-                <input type="text" placeholder="Придумай имя" id="regUser">
-                <span class="input-icon">👤</span>
+
+            <!-- Шаг 2: Подтверждение кода -->
+            <div class="verify-section" id="verifySection">
+                <div class="auth-card-header">
+                    <span class="auth-card-icon">📩</span>
+                    <h2>ПОДТВЕРЖДЕНИЕ</h2>
+                </div>
+                <p style="color: #aaa; font-size: 13px; margin-bottom: 15px; text-align: center;">
+                    Мы отправили 6-значный код на почту<br><strong id="verifyEmailDisplay" style="color: #fff;"></strong>
+                </p>
+                <div class="code-inputs" id="codeInputs">
+                    <input type="text" maxlength="1" class="code-input" oninput="moveToNext(this)" onkeydown="moveToPrev(event, this)">
+                    <input type="text" maxlength="1" class="code-input" oninput="moveToNext(this)" onkeydown="moveToPrev(event, this)">
+                    <input type="text" maxlength="1" class="code-input" oninput="moveToNext(this)" onkeydown="moveToPrev(event, this)">
+                    <input type="text" maxlength="1" class="code-input" oninput="moveToNext(this)" onkeydown="moveToPrev(event, this)">
+                    <input type="text" maxlength="1" class="code-input" oninput="moveToNext(this)" onkeydown="moveToPrev(event, this)">
+                    <input type="text" maxlength="1" class="code-input" oninput="moveToNext(this)" onkeydown="moveToPrev(event, this)">
+                </div>
+                <div class="timer-text">
+                    Код истекает через: <span id="timerDisplay">5:00</span>
+                </div>
+                <a class="resend-link" id="resendLink" onclick="resendCode()">Отправить код повторно</a>
+                <button class="auth-btn" onclick="verifyCode()" style="margin-top: 10px;">
+                    <span>ПОДТВЕРДИТЬ</span>
+                </button>
+                <div class="auth-switch">
+                    <a onclick="switchToRegister()">← Назад к регистрации</a>
+                </div>
             </div>
-            <div class="input-group">
-                <input type="email" placeholder="Твоя почта" id="regEmail">
-                <span class="input-icon">📧</span>
-            </div>
-            <div class="input-group">
-                <input type="password" placeholder="Пароль" id="regPass">
-                <span class="input-icon">🔒</span>
-            </div>
-            <button class="auth-btn" onclick="handleRegister()">
-                <span>ПРОДАТЬ ДУШУ</span>
-                <span class="btn-blood-drip"></span>
-            </button>
-            <div class="auth-switch">
-                Уже в бездне? <a onclick="switchToLogin()">Войти</a>
+
+            <!-- Шаг 3: Успех -->
+            <div class="register-success" id="registerSuccess">
+                <div class="success-icon">✅</div>
+                <h2 style="color: #4a4; margin: 15px 0; font-family: 'Cinzel', serif;">ДУША ПРИНЯТА</h2>
+                <p style="color: #aaa; font-size: 14px; margin-bottom: 20px;">
+                    Регистрация успешна!<br>Сейчас перенаправим в бездну...
+                </p>
             </div>
         </div>
 
-        <!-- Подвал -->
         <div class="auth-footer">Abandon all hope, ye who enter here</div>
     </div>
 
     <script>
-        // Если уже авторизован — на главную
-        if (sessionStorage.getItem('slaughter_user')) {
-            window.location.href = 'index.html';
-        }
+        // ===== ИНИЦИАЛИЗАЦИЯ EMAILJS =====
+        (function() {
+            emailjs.init("YOUR_PUBLIC_KEY"); // ЗАМЕНИ НА СВОЙ КЛЮЧ!
+        })();
 
-        // Генерация частиц
+        // ===== ПЕРЕМЕННЫЕ =====
+        let generatedCode = '';
+        let codeExpiry = 0;
+        let timerInterval = null;
+        let pendingUser = null;
+
+        // ===== ЧАСТИЦЫ =====
         const particlesContainer = document.getElementById('particles');
         for (let i = 0; i < 35; i++) {
             const drop = document.createElement('div');
@@ -89,20 +209,30 @@
             particlesContainer.appendChild(drop);
         }
 
-        // Переключение форм
+        // ===== ПРОВЕРКА АВТОРИЗАЦИИ =====
+        if (sessionStorage.getItem('slaughter_user')) {
+            window.location.href = 'index.html';
+        }
+
+        // ===== ПЕРЕКЛЮЧЕНИЕ ФОРМ =====
         function switchToRegister() {
             document.getElementById('loginCard').style.display = 'none';
             document.getElementById('registerCard').style.display = 'block';
+            document.getElementById('registerForm').style.display = 'block';
+            document.getElementById('verifySection').classList.remove('active');
+            document.getElementById('registerSuccess').classList.remove('active');
             document.getElementById('registerCard').style.animation = 'cardSlideIn 0.5s ease';
+            stopTimer();
         }
 
         function switchToLogin() {
             document.getElementById('registerCard').style.display = 'none';
             document.getElementById('loginCard').style.display = 'block';
             document.getElementById('loginCard').style.animation = 'cardSlideIn 0.5s ease';
+            stopTimer();
         }
 
-        // Вход
+        // ===== ВХОД =====
         function handleLogin() {
             const user = document.getElementById('loginUser').value.trim();
             const pass = document.getElementById('loginPass').value.trim();
@@ -112,49 +242,207 @@
                 return;
             }
 
-            // Сохраняем пользователя
-            const savedUser = localStorage.getItem('slaughter_user_' + user);
-            if (savedUser) {
-                const userData = JSON.parse(savedUser);
-                if (userData.pass === pass) {
-                    sessionStorage.setItem('slaughter_user', user);
-                    window.location.href = 'index.html';
-                } else {
-                    shakeCard('loginCard');
-                    document.getElementById('loginPass').value = '';
+            // Ищем пользователя по имени или email
+            let foundUser = null;
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.startsWith('slaughter_user_')) {
+                    const data = JSON.parse(localStorage.getItem(key));
+                    if (data.pass === pass && (data.user === user || data.email === user)) {
+                        foundUser = data;
+                        break;
+                    }
                 }
-            } else {
-                // Для демо: пускаем всех с любым паролем
-                sessionStorage.setItem('slaughter_user', user);
+            }
+
+            if (foundUser) {
+                sessionStorage.setItem('slaughter_user', foundUser.user);
                 window.location.href = 'index.html';
+            } else {
+                shakeCard('loginCard');
+                document.getElementById('loginPass').value = '';
+                alert('Неверное имя пользователя или пароль!');
             }
         }
 
-        // Регистрация
+        // ===== РЕГИСТРАЦИЯ =====
         function handleRegister() {
             const user = document.getElementById('regUser').value.trim();
             const email = document.getElementById('regEmail').value.trim();
             const pass = document.getElementById('regPass').value.trim();
+            const passConfirm = document.getElementById('regPassConfirm').value.trim();
 
-            if (!user || !email || !pass) {
+            if (!user || !email || !pass || !passConfirm) {
                 shakeCard('registerCard');
+                alert('Заполни все поля!');
                 return;
             }
 
-            if (!email.includes('@')) {
+            if (!isValidEmail(email)) {
                 shakeCard('registerCard');
-                document.getElementById('regEmail').value = '';
+                alert('Введи правильную почту!');
                 return;
             }
 
-            // Сохраняем
-            const userData = { user, email, pass };
-            localStorage.setItem('slaughter_user_' + user, JSON.stringify(userData));
-            sessionStorage.setItem('slaughter_user', user);
-            window.location.href = 'index.html';
+            if (pass !== passConfirm) {
+                shakeCard('registerCard');
+                alert('Пароли не совпадают!');
+                return;
+            }
+
+            if (pass.length < 6) {
+                shakeCard('registerCard');
+                alert('Пароль должен быть не менее 6 символов!');
+                return;
+            }
+
+            // Проверяем не занят ли email
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.startsWith('slaughter_user_')) {
+                    const data = JSON.parse(localStorage.getItem(key));
+                    if (data.email === email) {
+                        alert('Эта почта уже используется!');
+                        return;
+                    }
+                }
+            }
+
+            // Сохраняем данные и генерируем код
+            pendingUser = { user, email, pass };
+            generatedCode = generateCode();
+            codeExpiry = Date.now() + 5 * 60 * 1000; // 5 минут
+
+            // Отправляем код на почту
+            sendVerificationEmail(email, generatedCode);
+
+            // Показываем шаг верификации
+            document.getElementById('registerForm').style.display = 'none';
+            document.getElementById('verifySection').classList.add('active');
+            document.getElementById('verifyEmailDisplay').textContent = email;
+            document.getElementById('registerCard').style.animation = 'none';
+            document.getElementById('registerCard').offsetHeight;
+            document.getElementById('registerCard').style.animation = 'cardSlideIn 0.3s ease';
+
+            // Очищаем поля ввода кода
+            document.querySelectorAll('.code-input').forEach(i => i.value = '');
+            document.querySelector('.code-input').focus();
+
+            // Запускаем таймер
+            startTimer();
         }
 
-        // Анимация тряски
+        // ===== ОТПРАВКА КОДА НА ПОЧТУ =====
+        function sendVerificationEmail(email, code) {
+            // ВАРИАНТ 1: EmailJS (нужно настроить)
+            // emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", {
+            //     to_email: email,
+            //     code: code,
+            //     user_name: pendingUser.user
+            // });
+
+            // ВАРИАНТ 2: Для демо - показываем код в консоли и alert
+            console.log('=== КОД ПОДТВЕРЖДЕНИЯ ===');
+            console.log('Почта:', email);
+            console.log('Код:', code);
+            console.log('=========================');
+
+            alert(`📧 ДЕМО-РЕЖИМ\n\nКод отправлен на ${email}\n\nКод подтверждения: ${code}\n\n(В реальности код придёт на почту. Сейчас используй этот код для теста.)`);
+        }
+
+        // ===== ПРОВЕРКА КОДА =====
+        function verifyCode() {
+            const inputs = document.querySelectorAll('.code-input');
+            let enteredCode = '';
+            inputs.forEach(i => enteredCode += i.value);
+
+            if (enteredCode.length < 6) {
+                shakeCard('registerCard');
+                alert('Введи все 6 цифр кода!');
+                return;
+            }
+
+            if (Date.now() > codeExpiry) {
+                alert('Код истёк! Запроси новый.');
+                return;
+            }
+
+            if (enteredCode === generatedCode) {
+                // Успех!
+                const userDataKey = 'slaughter_user_' + pendingUser.user;
+                localStorage.setItem(userDataKey, JSON.stringify(pendingUser));
+                sessionStorage.setItem('slaughter_user', pendingUser.user);
+
+                // Показываем успех
+                document.getElementById('verifySection').classList.remove('active');
+                document.getElementById('registerSuccess').classList.add('active');
+                stopTimer();
+
+                // Редирект через 2 секунды
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 2000);
+            } else {
+                shakeCard('registerCard');
+                alert('Неверный код! Попробуй ещё раз.');
+                document.querySelectorAll('.code-input').forEach(i => i.value = '');
+                document.querySelector('.code-input').focus();
+            }
+        }
+
+        // ===== ПОВТОРНАЯ ОТПРАВКА =====
+        function resendCode() {
+            if (!pendingUser) return;
+
+            generatedCode = generateCode();
+            codeExpiry = Date.now() + 5 * 60 * 1000;
+            sendVerificationEmail(pendingUser.email, generatedCode);
+
+            document.querySelectorAll('.code-input').forEach(i => i.value = '');
+            document.querySelector('.code-input').focus();
+            document.getElementById('resendLink').classList.remove('show');
+
+            startTimer();
+        }
+
+        // ===== ТАЙМЕР =====
+        function startTimer() {
+            stopTimer();
+            updateTimer();
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        function stopTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+        }
+
+        function updateTimer() {
+            const remaining = Math.max(0, Math.ceil((codeExpiry - Date.now()) / 1000));
+            const minutes = Math.floor(remaining / 60);
+            const seconds = remaining % 60;
+            document.getElementById('timerDisplay').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+
+            if (remaining <= 60) {
+                document.getElementById('resendLink').classList.add('show');
+            }
+
+            if (remaining <= 0) {
+                stopTimer();
+            }
+        }
+
+        // ===== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ =====
+        function generateCode() {
+            return Math.floor(100000 + Math.random() * 900000).toString();
+        }
+
+        function isValidEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
         function shakeCard(id) {
             const card = document.getElementById(id);
             card.style.animation = 'none';
@@ -163,13 +451,53 @@
             setTimeout(() => card.style.animation = '', 500);
         }
 
-        // Enter
+        // ===== НАВИГАЦИЯ ПО ИНПУТАМ КОДА =====
+        function moveToNext(input) {
+            if (input.value.length === 1) {
+                const next = input.nextElementSibling;
+                if (next && next.classList.contains('code-input')) {
+                    next.focus();
+                }
+            }
+        }
+
+        function moveToPrev(event, input) {
+            if (event.key === 'Backspace' && input.value.length === 0) {
+                const prev = input.previousElementSibling;
+                if (prev && prev.classList.contains('code-input')) {
+                    prev.focus();
+                }
+            }
+        }
+
+        // Вставка кода из буфера обмена
+        document.addEventListener('paste', function(e) {
+            if (document.activeElement && document.activeElement.classList.contains('code-input')) {
+                e.preventDefault();
+                const pasted = (e.clipboardData || window.clipboardData).getData('text');
+                const digits = pasted.replace(/\D/g, '').slice(0, 6);
+                const inputs = document.querySelectorAll('.code-input');
+                digits.split('').forEach((digit, i) => {
+                    if (inputs[i]) inputs[i].value = digit;
+                });
+                if (inputs[digits.length - 1]) inputs[digits.length - 1].focus();
+            }
+        });
+
+        // Enter на форме регистрации
         document.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
-                if (document.getElementById('loginCard').style.display !== 'none') {
+                const loginCard = document.getElementById('loginCard');
+                const registerCard = document.getElementById('registerCard');
+
+                if (loginCard.style.display !== 'none') {
                     handleLogin();
-                } else {
-                    handleRegister();
+                } else if (registerCard.style.display !== 'none') {
+                    if (document.getElementById('registerForm').style.display !== 'none') {
+                        handleRegister();
+                    } else if (document.getElementById('verifySection').classList.contains('active')) {
+                        verifyCode();
+                    }
                 }
             }
         });
