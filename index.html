@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SLAUGHTER — Premium Cheats</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Заставка -->
+    <div class="splash-screen" id="splashScreen">
+        <div class="splash-container">
+            <!-- Фоновые частицы -->
+            <div class="particles" id="particles"></div>
+            
+            <!-- Затемнение -->
+            <div class="overlay"></div>
+            
+            <!-- Контент заставки -->
+            <div class="splash-content">
+                <!-- Логотип -->
+                <div class="splash-logo">
+                    <span class="splash-letter">S</span>
+                    <span class="splash-letter">L</span>
+                    <span class="splash-letter">A</span>
+                    <span class="splash-letter">U</span>
+                    <span class="splash-letter">G</span>
+                    <span class="splash-letter">H</span>
+                    <span class="splash-letter">T</span>
+                    <span class="splash-letter">E</span>
+                    <span class="splash-letter">R</span>
+                </div>
+                
+                <!-- Линия разделителя -->
+                <div class="splash-divider">
+                    <span class="line-left"></span>
+                    <span class="diamond"></span>
+                    <span class="line-right"></span>
+                </div>
+                
+                <!-- Подзаголовок -->
+                <div class="splash-subtitle">PREMIUM MINECRAFT CHEAT</div>
+                
+                <!-- Описание -->
+                <div class="splash-description">
+                    <span>Загрузка системы</span>
+                </div>
+                
+                <!-- Прогресс-бар -->
+                <div class="splash-progress-container">
+                    <div class="splash-progress-bar">
+                        <div class="splash-progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="splash-progress-info">
+                        <span class="splash-percentage" id="percentage">0%</span>
+                        <span class="splash-status" id="statusText">Инициализация...</span>
+                    </div>
+                </div>
+                
+                <!-- Версия -->
+                <div class="splash-version">v4.2.1</div>
+            </div>
+            
+            <!-- Нижняя информация -->
+            <div class="splash-footer">
+                <span>&copy; 2026 SLAUGHTER</span>
+                <span class="separator">|</span>
+                <span>Все права защищены</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно авторизации -->
+    <div class="auth-modal" id="authModal">
+        <div class="auth-modal-overlay"></div>
+        <div class="auth-modal-content">
+            <div class="auth-modal-header">
+                <h2 id="authModalTitle">Авторизация</h2>
+                <button class="auth-modal-close" id="authModalClose">&times;</button>
+            </div>
+            
+            <!-- Форма входа -->
+            <form class="auth-form" id="loginForm">
+                <div class="form-group">
+                    <label for="loginUsername">Логин</label>
+                    <input type="text" id="loginUsername" placeholder="Введите логин" required autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Пароль</label>
+                    <input type="password" id="loginPassword" placeholder="Введите пароль" required autocomplete="current-password">
+                </div>
+                <div class="form-group remember-me">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="rememberMe">
+                        <span>Запомнить меня</span>
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Войти</button>
+            </form>
+            
+            <!-- Форма регистрации -->
+            <form class="auth-form hidden" id="registerForm">
+                <div class="form-group">
+                    <label for="registerUsername">Логин</label>
+                    <input type="text" id="registerUsername" placeholder="Придумайте логин" required autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Пароль</label>
+                    <input type="password" id="registerPassword" placeholder="Минимум 8 символов" required autocomplete="new-password">
+                </div>
+                <div class="form-group">
+                    <label for="registerConfirmPassword">Подтверждение пароля</label>
+                    <input type="password" id="registerConfirmPassword" placeholder="Повторите пароль" required autocomplete="new-password">
+                </div>
+                <div class="form-group">
+                    <label for="registerInviteCode">Инвайт-код</label>
+                    <input type="text" id="registerInviteCode" placeholder="Введите инвайт-код" required>
+                    <div class="invite-hint">Для регистрации необходим действующий инвайт-код</div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Зарегистрироваться</button>
+            </form>
+            
+            <div class="auth-modal-footer">
+                <p id="authToggleText">Нет аккаунта? <a href="#" id="authToggleLink">Зарегистрироваться</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Основной контент -->
+    <div class="main-content" id="mainContent">
+        <header class="header">
+            <nav class="nav">
+                <div class="logo">SLAUGHTER</div>
+                <ul class="nav-menu">
+                    <li><a href="index.html" class="active">Главная</a></li>
+                    <li><a href="pages/downloads.html">Загрузки</a></li>
+                    <li><a href="pages/about.html">О чите</a></li>
+                </ul>
+                <div class="nav-auth">
+                    <button class="btn btn-outline" id="logoutBtn" style="display: none;">Выйти</button>
+                    <span class="user-info" id="userInfo" style="display: none;"></span>
+                </div>
+            </nav>
+        </header>
+
+        <main>
+            <section class="hero">
+                <div class="hero-content">
+                    <h1>SLAUGHTER</h1>
+                    <p class="tagline">Премиум чит на Minecraft</p>
+                    <p class="hero-description">
+                        Заточен под сервер yuppimine.
+                        Разработка с 2026 года.
+                    </p>
+                    <div class="hero-actions">
+                        <a href="pages/downloads.html" class="btn btn-primary btn-large">Скачать</a>
+                        <a href="pages/about.html" class="btn btn-outline btn-large">О чите</a>
+                    </div>
+                </div>
+            </section>
+
+            <section class="features">
+                <h2>Преимущества</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h3>Kill Aura</h3>
+                        <p>Автоматическая атака ближайших целей с настраиваемой дистанцией и скоростью.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>В разработке</h3>
+                        <p>Новые функции находятся в активной разработке. Следите за обновлениями.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>В разработке</h3>
+                        <p>Новые функции находятся в активной разработке. Следите за обновлениями.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>В разработке</h3>
+                        <p>Новые функции находятся в активной разработке. Следите за обновлениями.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="cta">
+                <h2>Начните использовать прямо сейчас</h2>
+                <p>Регистрация занимает менее минуты. Мгновенный доступ к загрузкам.</p>
+                <a href="pages/downloads.html" class="btn btn-primary btn-large">Перейти к загрузкам</a>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <p>&copy; 2026 SLAUGHTER. Все права защищены.</p>
+                <p>Используя наш сервис, вы соглашаетесь с условиями использования.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Кастомный курсор -->
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
