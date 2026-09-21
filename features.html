@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Возможности — SLAUGHTER</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-text">LOADING MODULES</div>
+  <div class="loader-bar"></div>
+</div>
+
+<!-- 3D BACKGROUND -->
+<canvas id="three-canvas"></canvas>
+<div class="vignette"></div>
+<div class="noise"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="index.html" class="logo">
+    <div class="dot"></div>
+    SLAUGHTER<span>.</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Главная</a></li>
+    <li><a href="features.html" class="active">Функции</a></li>
+    <li><a href="download.html">Скачать</a></li>
+    <li><a href="install.html">Установка</a></li>
+    <li><a href="faq.html">FAQ</a></li>
+  </ul>
+  <button class="burger" id="burger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <ul>
+    <li><a href="index.html">Главная</a></li>
+    <li><a href="features.html">Функции</a></li>
+    <li><a href="download.html">Скачать</a></li>
+    <li><a href="install.html">Установка</a></li>
+    <li><a href="faq.html">FAQ</a></li>
+  </ul>
+</div>
+
+<!-- PAGE HEADER -->
+<header class="page-header">
+  <div class="badge">
+    <div class="live"></div>
+    MODULES · 42 ACTIVE
+  </div>
+  <h1 class="page-title reveal">Функции <em>клиента</em></h1>
+  <p class="section-desc reveal">Полный список модулей, разбитый по категориям. Каждый — с настройками и горячими клавишами.</p>
+</header>
+
+<!-- COMBAT -->
+<section class="section">
+  <div class="section-label reveal">01 — Combat</div>
+  <h2 class="section-title reveal">Боевая <em>система</em></h2>
+  <div class="features-grid reveal">
+    <div class="feature">
+      <div class="feature-num">/ KillAura</div>
+      <h3>KillAura</h3>
+      <p>Мультитаргет, ротация, silent-режим, приоритет по HP / дистанции / углу.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-num">/ Reach</div>
+      <h3>Reach</h3>
+      <p>Увеличение дистанции атаки с обходом патрулей. Настройка 3.0 — 6.0 блоков.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-num">/ Velocity</div>
+      <h3>Velocity</h3>
+      <p>Контроль отбрасывания. Режимы: Cancel, Jump, Matrix, Grim, Intave.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-num">/ AutoClicker</div>
+      <h3>AutoClicker</h3>
+      <p>Рандомизация CPS, human-паттерны, поддержка удержания и бёрст-режима.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-num">/ Criticals</div>
+      <h3>Criticals</h3>
+      <p>Packet, Jump, MiniJump. Криты на любой высоте без флагов.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-num">/ AntiKnockback</div>
+      <h3>AntiKnockback</h3>
+      <p>Полный/частичный контроль. Совместим с большинством античитов.</p>
+    </div>
+  </div>
+</section>
+
+<!-- MOVEMENT -->
+<section class="section">
+  <div class="section-label reveal">02 — Movement</div>
+  <h2 class="section-title reveal">Движение <em>без границ</em></h2>
+  <div class="features-grid reveal">
+    <div class="feature">
+      <div class="feature-num">/ Speed</div>
+      <h3>Speed</h3>
+      <p>Vanilla, NCP, Matrix, Grim, Verus. Плавные обходы без резких рывков.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-num">/ Fly</div>
+      <h3>Fly</h3>
+      <p>Vanilla, Packet, Glide. Настройка вертикальной и горизонтальной скорости.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-num">/ LongJump</div>
+      <h3>LongJump</h3>
+      <p>Прыжки на дистанцию до 12 блоков. Burst-режим для быстрых перелётов.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-num">/ Step</div>
+      <h3>Step</h3>
+      <p>Автоматический подъём на блоки 1.5 — 2.5 блока. Vanilla / NCP режимы.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-num">/ NoFall</div>
+      <h3>NoFall</h3>
+      <p>Защита от урона при падении. Packet / Spoof / Prediction.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-num">/ Sprint</div>
+      <h3>Sprint</h3>
+      <p>Постоянный спринт, OmniSprint, KeepSprint при ударе.</p>
+    </div>
+  </div>
+</section>
+
+<!-- VISUALS -->
+<section class="section">
+  <div class="section-label reveal">03 — Visuals</div>
+  <h2 class="section-title reveal">Визуал <em>нового уровня</em></h2>
+  <div class="features-grid reveal">
+    <div class="feature">
+      <div class="feature-num">/ ESP</div>
+      <h3>ESP</h3>
+      <p>Box, Outline, 2D, 3D, Glow. Цвета, толщина, дистанция отображения.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-num">/ Chams</div>
+      <h3>Chams</h3>
+      <p>Кастомные скины через шейдеры. Прозрачность и глубина рендера.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-num">/ Tracers</div>
+      <h3>Tracers</h3>
+      <p>Линии до игроков и мобов. Настройка точки старта: центр, ноги, курсор.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-num">/ XRay</div>
+      <h3>XRay</h3>
+      <p>Прозрачность блоков, подсветка руд, авто-настройка под сервер.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-num">/ Fullbright</div>
+      <h3>Fullbright</h3>
+      <p>Максимальная яркость мира. Плавная или мгновенная настройка.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-num">/ HUD</div>
+      <h3>HUD Editor</h3>
+      <p>Drag & Drop редактор всех элементов. Watermark, FPS, Ping, CPS, Armor.</p>
+    </div>
+  </div>
+</section>
+
+<!-- MISC -->
+<section class="section">
+  <div class="section-label reveal">04 — Misc</div>
+  <h2 class="section-title reveal">Дополнительно</h2>
+  <div class="features-grid reveal">
+    <div class="feature">
+      <div class="feature-num">/ Scaffold</div>
+      <h3>Scaffold</h3>
+      <p>Автоматическая установка блоков. Tower, GodBridge, Breezily.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-num">/ AutoTool</div>
+      <h3>AutoTool</h3>
+      <p>Авто-выбор лучшего инструмента. Учёт прочности и зачарований.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-num">/ ChestStealer</div>
+      <h3>ChestStealer</h3>
+      <p>Быстрый сбор из сундуков. Фильтр по предметам и сортировка.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-num">/ AntiBot</div>
+      <h3>AntiBot</h3>
+      <p>Фильтрация ботов на серверах. Настройка по имени, пингу, движению.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-num">/ NameProtect</div>
+      <h3>NameProtect</h3>
+      <p>Скрытие твоего ника и ников тимейтов в интерфейсе и чате.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-num">/ Configs</div>
+      <h3>Config System</h3>
+      <p>Неограниченные конфиги с облачной синхронизацией и быстрым переключением.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="copy">© 2026 <span>SLAUGHTER</span> — All rights reserved.</div>
+  <div class="socials">
+    <a href="#">Telegram</a>
+    <a href="#">Discord</a>
+    <a href="#">YouTube</a>
+  </div>
+</footer>
+
+<!-- PAGE TRANSITION OVERLAY -->
+<div id="page-transition">
+  <div class="curtain"></div>
+  <div class="glitch-strips"></div>
+  <div class="transition-label">LOADING · SLAUGHTER</div>
+</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+<script type="module" src="js/three-bg.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+</html>

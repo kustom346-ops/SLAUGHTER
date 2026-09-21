@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Вход — SLAUGHTER</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/auth.css">
+</head>
+<body class="auth-page">
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-text">SLAUGHTER AUTH</div>
+  <div class="loader-bar"></div>
+</div>
+
+<!-- CSS-КОСМОС -->
+<div class="auth-particles">
+  <div class="auth-particle"></div>
+  <div class="auth-particle"></div>
+  <div class="auth-particle"></div>
+  <div class="auth-particle"></div>
+  <div class="auth-particle"></div>
+  <div class="auth-particle"></div>
+  <div class="auth-particle"></div>
+  <div class="auth-particle"></div>
+  <div class="auth-particle"></div>
+  <div class="auth-particle"></div>
+</div>
+<div class="auth-orbit auth-orbit-1"></div>
+<div class="auth-orbit auth-orbit-2"></div>
+<div class="auth-orbit auth-orbit-3"></div>
+<div class="vignette"></div>
+<div class="noise"></div>
+
+<!-- AUTH CARD -->
+<div class="auth-wrap">
+  <div class="auth-card" id="authCard">
+
+    <a href="auth.html" class="logo auth-logo">
+      <div class="dot"></div>
+      SLAUGHTER<span>.</span>
+    </a>
+
+    <div class="auth-tabs">
+      <button class="auth-tab active" data-tab="login">ВХОД</button>
+      <button class="auth-tab" data-tab="register">РЕГИСТРАЦИЯ</button>
+      <div class="auth-tab-indicator"></div>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <form class="auth-form active" id="loginForm" autocomplete="off">
+      <div class="field">
+        <label>Логин</label>
+        <input type="text" name="login" required minlength="3" maxlength="20" placeholder="username">
+      </div>
+      <div class="field">
+        <label>Пароль</label>
+        <input type="password" name="password" required minlength="4" placeholder="••••••••">
+      </div>
+      <div class="field-check">
+        <input type="checkbox" id="remember" name="remember">
+        <label for="remember">Запомнить меня</label>
+      </div>
+      <button type="submit" class="auth-submit">
+        ВОЙТИ
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </button>
+      <div class="auth-error" id="loginError"></div>
+    </form>
+
+    <!-- REGISTER FORM -->
+    <form class="auth-form" id="registerForm" autocomplete="off">
+      <div class="field">
+        <label>Логин</label>
+        <input type="text" name="login" required minlength="3" maxlength="20" placeholder="username">
+      </div>
+      <div class="field">
+        <label>Пароль</label>
+        <input type="password" name="password" required minlength="4" placeholder="минимум 4 символа">
+      </div>
+      <div class="field">
+        <label>Повтори пароль</label>
+        <input type="password" name="password2" required minlength="4" placeholder="повтори пароль">
+      </div>
+      <div class="field-check">
+        <input type="checkbox" id="agree" name="agree" required>
+        <label for="agree">Согласен с <a href="#">условиями</a></label>
+      </div>
+      <button type="submit" class="auth-submit">
+        СОЗДАТЬ АККАУНТ
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </button>
+      <div class="auth-error" id="registerError"></div>
+    </form>
+
+    <div class="auth-footer">
+      <span class="auth-footer-text">Защищено шифрованием · SHA-256</span>
+    </div>
+  </div>
+</div>
+
+<!-- WARP TRANSITION -->
+<div id="warp-transition">
+  <div class="warp-glow"></div>
+  <div class="warp-lines"></div>
+  <div class="warp-core"></div>
+  <div class="warp-label">WELCOME · SLAUGHTER</div>
+</div>
+
+<script src="js/auth.js"></script>
+
+</body>
+</html>

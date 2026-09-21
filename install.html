@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Установка — SLAUGHTER</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-text">PREPARING GUIDE</div>
+  <div class="loader-bar"></div>
+</div>
+
+<!-- 3D BACKGROUND -->
+<canvas id="three-canvas"></canvas>
+<div class="vignette"></div>
+<div class="noise"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="index.html" class="logo">
+    <div class="dot"></div>
+    SLAUGHTER<span>.</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Главная</a></li>
+    <li><a href="features.html">Функции</a></li>
+    <li><a href="download.html">Скачать</a></li>
+    <li><a href="install.html" class="active">Установка</a></li>
+    <li><a href="faq.html">FAQ</a></li>
+  </ul>
+  <button class="burger" id="burger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <ul>
+    <li><a href="index.html">Главная</a></li>
+    <li><a href="features.html">Функции</a></li>
+    <li><a href="download.html">Скачать</a></li>
+    <li><a href="install.html">Установка</a></li>
+    <li><a href="faq.html">FAQ</a></li>
+  </ul>
+</div>
+
+<!-- PAGE HEADER -->
+<header class="page-header">
+  <div class="badge">
+    <div class="live"></div>
+    SETUP GUIDE
+  </div>
+  <h1 class="page-title reveal">Установка за <em>3 шага</em></h1>
+  <p class="section-desc reveal">Установка занимает меньше минуты. Никаких сложных манипуляций.</p>
+</header>
+
+<!-- STEPS -->
+<section class="section">
+  <div class="steps reveal">
+    <div class="step">
+      <div class="step-num">01</div>
+      <h4>Скачай файл</h4>
+      <p>Перейди на страницу <a href="download.html" class="ilink">Скачать</a> и сохрани .jar файл в удобную папку.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <h4>Установи Forge / Fabric</h4>
+      <p>Убедись, что у тебя установлен загрузчик для Minecraft 1.21.4. Рекомендуем Fabric Loader.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <h4>Закинь в mods</h4>
+      <p>Помести .jar в папку <code>%appdata%/.minecraft/mods</code> и запусти игру.</p>
+    </div>
+  </div>
+</section>
+
+<!-- REQUIREMENTS -->
+<section class="section">
+  <div class="section-label reveal">Требования</div>
+  <h2 class="section-title reveal">Системные <em>требования</em></h2>
+
+  <div class="requirements reveal">
+    <div class="req-col">
+      <h3>Минимальные</h3>
+      <ul>
+        <li>Windows 10 64-bit</li>
+        <li>Java 17+</li>
+        <li>4 GB RAM</li>
+        <li>Minecraft 1.21.4</li>
+        <li>Fabric Loader 0.15+</li>
+      </ul>
+    </div>
+    <div class="req-col">
+      <h3>Рекомендуемые</h3>
+      <ul>
+        <li>Windows 10/11 64-bit</li>
+        <li>Java 21</li>
+        <li>8+ GB RAM</li>
+        <li>SSD для хранения файлов</li>
+        <li>Fabric Loader latest</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- NOTES -->
+<section class="section">
+  <div class="section-label reveal">Внимание</div>
+  <h2 class="section-title reveal">Важные <em>заметки</em></h2>
+
+  <div class="notes reveal">
+    <div class="note">
+      <div class="note-icon">!</div>
+      <div>
+        <h4>Отключи антивирус</h4>
+        <p>Некоторые антивирусы могут ложно определять мод как угрозу. Добавь папку в исключения.</p>
+      </div>
+    </div>
+    <div class="note">
+      <div class="note-icon">!</div>
+      <div>
+        <h4>Только официальные сборки</h4>
+        <p>Скачивай клиент только с этого сайта. Сторонние источники могут содержать вредоносный код.</p>
+      </div>
+    </div>
+    <div class="note">
+      <div class="note-icon">!</div>
+      <div>
+        <h4>Не используй с другого аккаунта</h4>
+        <p>Клиент привязан к твоему HWID. Один аккаунт = одно устройство.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="copy">© 2026 <span>SLAUGHTER</span> — All rights reserved.</div>
+  <div class="socials">
+    <a href="#">Telegram</a>
+    <a href="#">Discord</a>
+    <a href="#">YouTube</a>
+  </div>
+</footer>
+
+<!-- PAGE TRANSITION OVERLAY -->
+<div id="page-transition">
+  <div class="curtain"></div>
+  <div class="glitch-strips"></div>
+  <div class="transition-label">LOADING · SLAUGHTER</div>
+</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+<script src="js/auth-guard.js"></script>
+<script type="module" src="js/three-bg.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+</html>

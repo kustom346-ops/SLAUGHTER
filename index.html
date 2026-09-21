@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SLAUGHTER — Minecraft 1.21.4 Client</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-text">INITIALIZING SLAUGHTER</div>
+  <div class="loader-bar"></div>
+</div>
+
+<!-- 3D BACKGROUND -->
+<canvas id="three-canvas"></canvas>
+<div class="vignette"></div>
+<div class="noise"></div>
+
+<!-- WELCOME OVERLAY (после warp) -->
+<div id="welcome-overlay">
+  <div class="welcome-text">ДОБРО ПОЖАЛОВАТЬ<span id="welcomeName"></span></div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="index.html" class="logo">
+    <div class="dot"></div>
+    SLAUGHTER<span>.</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html" class="active">Главная</a></li>
+    <li><a href="features.html">Функции</a></li>
+    <li><a href="download.html">Скачать</a></li>
+    <li><a href="install.html">Установка</a></li>
+    <li><a href="faq.html">FAQ</a></li>
+  </ul>
+  <button class="burger" id="burger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <ul>
+    <li><a href="index.html">Главная</a></li>
+    <li><a href="features.html">Функции</a></li>
+    <li><a href="download.html">Скачать</a></li>
+    <li><a href="install.html">Установка</a></li>
+    <li><a href="faq.html">FAQ</a></li>
+  </ul>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="badge">
+    <div class="live"></div>
+    MINECRAFT 1.21.4 · RELEASE
+  </div>
+  <h1 class="title" data-text="SLAUGHTER">SLAUGHTER</h1>
+  <p class="subtitle">КЛИЕНТ ДЛЯ <b>ПОБЕДЫ</b> · ВЕРСИЯ <b>1.21.4</b></p>
+  <div class="hero-cta">
+    <a href="download.html" class="btn btn-primary">
+      Скачать клиент
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left:8px">
+        <path d="M5 12h14M12 5l7 7-7 7"/>
+      </svg>
+    </a>
+    <a href="features.html" class="btn btn-ghost">Возможности</a>
+  </div>
+
+  <div class="scroll-hint">
+    <div class="mouse"></div>
+    <span>SCROLL</span>
+  </div>
+</div>
+
+<!-- SHORT FEATURES -->
+<section class="section" id="short-features">
+  <div class="section-label reveal">01 — Возможности</div>
+  <h2 class="section-title reveal">Заточен под <em>доминирование</em></h2>
+  <p class="section-desc reveal">Каждый модуль отточен до идеала. Минимальный отклик, максимальная производительность, продуманный интерфейс.</p>
+
+  <div class="features-grid reveal">
+    <div class="feature">
+      <div class="feature-num">/ 01</div>
+      <h3>Combat System</h3>
+      <p>Точная настройка KillAura, Reach, Velocity. Стабильно на любых серверах.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-num">/ 02</div>
+      <h3>Movement</h3>
+      <p>Speed, Fly, LongJump, Step — плавные обходы античитов под 1.21.4.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-num">/ 03</div>
+      <h3>Visuals</h3>
+      <p>ESP, Chams, Tracers, XRay. Гибкая настройка рендера под твой стиль.</p>
+    </div>
+  </div>
+
+  <div style="text-align:center; margin-top:56px">
+    <a href="features.html" class="btn btn-ghost reveal">Все возможности →</a>
+  </div>
+</section>
+
+<!-- CTA STRIP -->
+<section class="cta-strip reveal">
+  <div class="cta-content">
+    <div class="section-label">Готов начать?</div>
+    <h2 class="section-title">Скачай <em>последнюю</em> версию</h2>
+    <p class="section-desc">Актуальная сборка под Minecraft 1.21.4. Проверено, подписано, без вирусов.</p>
+    <a href="download.html" class="btn btn-primary">Перейти к загрузке</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="copy">© 2026 <span>SLAUGHTER</span> — All rights reserved.</div>
+  <div class="socials">
+    <a href="#">Telegram</a>
+    <a href="#">Discord</a>
+    <a href="#">YouTube</a>
+  </div>
+</footer>
+
+<!-- PAGE TRANSITION OVERLAY -->
+<div id="page-transition">
+  <div class="curtain"></div>
+  <div class="glitch-strips"></div>
+  <div class="transition-label">LOADING · SLAUGHTER</div>
+</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+<script src="js/auth-guard.js"></script>
+<script type="module" src="js/three-bg.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FAQ — SLAUGHTER</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-text">LOADING FAQ</div>
+  <div class="loader-bar"></div>
+</div>
+
+<!-- 3D BACKGROUND -->
+<canvas id="three-canvas"></canvas>
+<div class="vignette"></div>
+<div class="noise"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="index.html" class="logo">
+    <div class="dot"></div>
+    SLAUGHTER<span>.</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Главная</a></li>
+    <li><a href="features.html">Функции</a></li>
+    <li><a href="download.html">Скачать</a></li>
+    <li><a href="install.html">Установка</a></li>
+    <li><a href="faq.html" class="active">FAQ</a></li>
+  </ul>
+  <button class="burger" id="burger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <ul>
+    <li><a href="index.html">Главная</a></li>
+    <li><a href="features.html">Функции</a></li>
+    <li><a href="download.html">Скачать</a></li>
+    <li><a href="install.html">Установка</a></li>
+    <li><a href="faq.html">FAQ</a></li>
+  </ul>
+</div>
+
+<!-- PAGE HEADER -->
+<header class="page-header">
+  <div class="badge">
+    <div class="live"></div>
+    SUPPORT · 24/7
+  </div>
+  <h1 class="page-title reveal">Частые <em>вопросы</em></h1>
+  <p class="section-desc reveal">Если не нашёл ответ — пиши в Telegram, отвечаем в течение 15 минут.</p>
+</header>
+
+<!-- FAQ LIST -->
+<section class="section">
+  <div class="faq-list reveal">
+    <div class="faq-item">
+      <button class="faq-q">
+        <span>Клиент бесплатный?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>Базовая версия бесплатна. Premium с расширенными модулями и приоритетной поддержкой — платный.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q">
+        <span>Работает ли на серверах с античитом?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>Да. Мы регулярно обновляем обходы под актуальные версии Grim, Matrix, Verus, Intave и других.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q">
+        <span>Забанят ли мой аккаунт?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>Клиент использует обходы античитов, но 100% гарантию дать невозможно. Не используй на аккаунтах с ценными покупками.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q">
+        <span>Как открыть меню клиента?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>По умолчанию — клавиша <code>Right Shift</code>. Изменить можно в настройках клиента.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q">
+        <span>Клиент не запускается, что делать?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>Проверь: Java 17+, правильный загрузчик для 1.21.4, отсутствие конфликтов с другими модами. Если не помогает — пиши в поддержку.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q">
+        <span>Поддерживается ли macOS / Linux?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>Да, клиент кроссплатформенный. Для macOS рекомендуется Apple Silicon сборка Java.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="copy">© 2026 <span>SLAUGHTER</span> — All rights reserved.</div>
+  <div class="socials">
+    <a href="#">Telegram</a>
+    <a href="#">Discord</a>
+    <a href="#">YouTube</a>
+  </div>
+</footer>
+
+<!-- PAGE TRANSITION OVERLAY -->
+<div id="page-transition">
+  <div class="curtain"></div>
+  <div class="glitch-strips"></div>
+  <div class="transition-label">LOADING · SLAUGHTER</div>
+</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+<script src="js/auth-guard.js"></script>
+<script type="module" src="js/three-bg.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+</html>
